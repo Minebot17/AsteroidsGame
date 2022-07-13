@@ -23,7 +23,7 @@ namespace View.Utils
         public void MapTransformFromEntity()
         {
             _transform.position = Vector3.Lerp(_transform.position, _entity.Position, Time.deltaTime * PositionInterpolationSpeed);
-            _transform.eulerAngles = new Vector3(0, 0, _entity.RotationAngle);
+            _transform.eulerAngles = new Vector3(0, 0, _entity.RotationAngle); // TODO lerp angle
         }
     }
 }

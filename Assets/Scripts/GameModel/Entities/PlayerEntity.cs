@@ -4,11 +4,8 @@ using UnityEngine;
 
 namespace GameModel.Entities
 {
-    public class PlayerLogic : IPlayerLogic
+    public class PlayerEntity : Entity
     {
-        public Vector2 Position { get; private set; }
-        public float RotationAngle { get; private set; }
-        
         private readonly float _movingSpeed;
         private readonly float _rotationSpeed;
         private readonly float _dragModifier;
@@ -17,14 +14,14 @@ namespace GameModel.Entities
         private RotationState _rotationState;
         private bool _isMoving;
 
-        public PlayerLogic(float movingSpeed, float rotationSpeed, float dragModifier)
+        public PlayerEntity(float movingSpeed, float rotationSpeed, float dragModifier)
         {
             _movingSpeed = movingSpeed;
             _rotationSpeed = rotationSpeed;
             _dragModifier = dragModifier;
         }
 
-        public void FixedUpdate()
+        public override void FixedUpdate()
         {
             // Apply moving input to accelerate
             if (_isMoving)

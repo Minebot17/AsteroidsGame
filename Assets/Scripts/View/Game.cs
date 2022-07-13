@@ -9,13 +9,21 @@ namespace View
     public class Game : MonoBehaviour
     {
         [SerializeField]
+        private GameObject _playerPrefab;
+        
+        [SerializeField]
         private GameObject _bigAsteroidPrefab;
         
         private IGameModel _gameModel;
+        private EntitySpawner _entitySpawner;
 
         private void Start()
         {
-            _gameModel = new GameModel.GameModel(ConstructEntitySpawner());
+            _gameModel = new GameModel.GameModel();
+            _entitySpawner = ConstructEntitySpawner();
+            _gameModel.EntityManager.OnEntitySpawned += OnEntitySpawned;
+            
+            _gameModel.StartGame();
         }
 
         private void FixedUpdate()
@@ -23,11 +31,17 @@ namespace View
             _gameModel.FixedUpdate();
         }
 
+        private void OnEntitySpawned(IEntity entity)
+        {
+            _entitySpawner.SpawnEntity(entity);
+        }
+
         private EntitySpawner ConstructEntitySpawner()
         {
             EntitySpawner entitySpawner = new EntitySpawner();
             
-            entitySpawner.RegisterEntityPrefab(typeof(BigAsteroidLogic), _bigAsteroidPrefab);
+            entitySpawner.RegisterEntityPrefab(typeof(PlayerEntity), _playerPrefab);
+            entitySpawner.RegisterEntityPrefab(typeof(BigAsteroidEntity), _bigAsteroidPrefab);
 
             return entitySpawner;
         }

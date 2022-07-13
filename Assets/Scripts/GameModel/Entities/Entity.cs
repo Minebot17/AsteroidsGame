@@ -8,8 +8,8 @@ namespace GameModel.Entities
         public event Action OnSelfDestroy;
         public event Action OnDestroyed;
 
-        public Vector2 Position { get; protected set; }
-        public float RotationAngle { get; protected set; }
+        public Vector2 Position { get; set; }
+        public float RotationAngle { get; set; }
         
         public abstract void FixedUpdate();
 

@@ -10,6 +10,8 @@ namespace GameModel.Map
         public event Action<IEntity> OnEntityDestroyed;
 
         private readonly List<IEntity> _entities = new();
+        
+        public IReadOnlyList<IEntity> Entities => _entities.AsReadOnly();
 
         public void SpawnEntity(IEntity entity)
         {

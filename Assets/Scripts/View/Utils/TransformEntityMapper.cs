@@ -9,7 +9,8 @@ namespace View.Utils
     // Поэтому сущность ниже будет отвечать за интерполяцию и установку значений из модели в представление для плавного перемещения объектов
     public class TransformEntityMapper : ITransformEntityMapper
     {
-        private const float PositionInterpolationSpeed = 5f;
+        private const float PositionInterpolationSpeed = 10f;
+        private const float InterpolationMinDistance = 4f;
         
         private readonly Transform _transform;
         private readonly IEntity _entity;
@@ -22,7 +23,15 @@ namespace View.Utils
 
         public void MapTransformFromEntity()
         {
-            _transform.position = Vector3.Lerp(_transform.position, _entity.Position, Time.deltaTime * PositionInterpolationSpeed);
+            if (Vector3.Distance(_transform.position, _entity.Position) < InterpolationMinDistance)
+            {
+                _transform.position = Vector3.Lerp(_transform.position, _entity.Position, Time.deltaTime * PositionInterpolationSpeed);
+            }
+            else
+            {
+                _transform.position = _entity.Position;
+            }
+            
             _transform.eulerAngles = new Vector3(0, 0, _entity.RotationAngle); // TODO lerp angle
         }
     }

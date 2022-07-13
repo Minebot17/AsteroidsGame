@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using GameModel.Entities;
 using GameModel.Map;
-using GameModel.Utils;
 using UnityEngine;
 
 namespace GameModel
@@ -15,10 +14,10 @@ namespace GameModel
 
         public IEntityManager EntityManager => _entityManager;
 
-        public GameModel()
+        public GameModel(Vector2 mapSize)
         {
             _entityManager = new EntityManager();
-            _mapSizeManager = new MapSizeManager(new Vector2(30, 30)); // TODO change map size to screen with offsets
+            _mapSizeManager = new MapSizeManager(mapSize);
         }
         
         public void StartGame()
@@ -26,7 +25,8 @@ namespace GameModel
             _player = new PlayerEntity(0.0075f, 4f, 0.987f);
             _entityManager.SpawnEntity(_player);
             
-            _updatables.Add(new AsteroidsSpawner(_entityManager, _mapSizeManager, 5, 40, 0.05f, 1));
+            _updatables.Add(new AsteroidsSpawner(_entityManager, _mapSizeManager, 6, 40, 0.05f, 1));
+            _updatables.Add(new MapBorderEntityTeleporter(_entityManager, _mapSizeManager, 2));
         }
         
         public void FixedUpdate()

@@ -19,7 +19,11 @@ namespace View
 
         private void Start()
         {
-            _gameModel = new GameModel.GameModel();
+            Camera cam = Camera.main;
+            Vector3 leftRightCameraPoint = cam.ViewportToWorldPoint(new Vector3(1, 1, 0));
+            Vector2 mapSize = new Vector2(leftRightCameraPoint.x * 2f, leftRightCameraPoint.y * 2f);
+            
+            _gameModel = new GameModel.GameModel(mapSize);
             _entitySpawner = ConstructEntitySpawner();
             _gameModel.EntityManager.OnEntitySpawned += OnEntitySpawned;
             

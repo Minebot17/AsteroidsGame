@@ -17,7 +17,7 @@ namespace View
             _transformEntityMapper = new TransformEntityMapper(transform, EntityModel);
             EntityModel.OnDestroyed += () => Destroy(gameObject);
             
-            transform.position = EntityModel.Position;
+            transform.position = EntityModel.Position; // TODO remove copy-paste?
             transform.eulerAngles = new Vector3(0, 0, EntityModel.RotationAngle);
         }
 
@@ -25,17 +25,17 @@ namespace View
         {
             _transformEntityMapper.MapTransformFromEntity();
         }
-
-        private void FixedUpdate()
+        
+        public void HandleMoveAction(InputAction.CallbackContext context)
         {
-            // TODO переделать инпут на норм экшены
-            EntityModel.SetMovingState(Keyboard.current.wKey.isPressed);
+            Vector2 direction = context.ReadValue<Vector2>();
+            EntityModel.SetMovingState(direction.y > 0);
             EntityModel.SetRotationState(
-                Keyboard.current.aKey.isPressed 
-                ? RotationState.Left 
-                : Keyboard.current.dKey.isPressed 
-                    ? RotationState.Right
-                    : RotationState.None);
+                direction.x < 0 
+                    ? RotationState.Left 
+                    : direction.x > 0 
+                        ? RotationState.Right
+                        : RotationState.None);
         }
     }
 }

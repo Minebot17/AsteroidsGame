@@ -11,7 +11,7 @@ namespace GameModel.Map
         
         IReadOnlyList<IEntity> Entities { get; }
         
-        void SpawnEntity(IEntity entity);
+        void SpawnEntity<T>(T entity) where T : IEntity;
         void DestroyEntity(IEntity entity);
     }
 }

@@ -7,7 +7,7 @@ namespace GameModel.Entities
 {
     public class BigAsteroidEntity : MovableEntity
     {
-        private const float SpeedModifierForSmallAsteroids = 2f;
+        private const float SpeedModifierForSmallAsteroids = 2.5f;
 
         private readonly IEntityManager _entityManager;
         private readonly int _spawnSmallAsteroidsCount;
@@ -29,16 +29,21 @@ namespace GameModel.Entities
             if (other is BulletEntity)
             {
                 Destroy();
-                
-                for (var i = 0; i < _spawnSmallAsteroidsCount; i++)
-                {
-                    var smallAsteroid = new SmallAsteroidEntity(
-                        Position,
-                        Velocity.Rotate(Random.value * 360) * SpeedModifierForSmallAsteroids,
-                        Torque * (Random.value > 0.5 ? 1 : -1));
+            }
+        }
 
-                    _entityManager.SpawnEntity(smallAsteroid);
-                }
+        public override void Destroyed()
+        {
+            base.Destroyed();
+            
+            for (var i = 0; i < _spawnSmallAsteroidsCount; i++)
+            {
+                var smallAsteroid = new SmallAsteroidEntity(
+                    Position,
+                    Velocity.Rotate(Random.value * 360) * SpeedModifierForSmallAsteroids,
+                    Torque * (Random.value > 0.5 ? 1 : -1));
+
+                _entityManager.SpawnEntity(smallAsteroid);
             }
         }
     }

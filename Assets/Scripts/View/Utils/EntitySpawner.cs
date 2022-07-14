@@ -19,6 +19,12 @@ namespace View.Utils
 
         public void SpawnEntity(IEntity entity)
         {
+            if (!_entityPrefabs.ContainsKey(entity.GetType()))
+            {
+                Debug.LogError("Entity type not registered");
+                return;
+            }
+            
             var entityView = Object.Instantiate(_entityPrefabs[entity.GetType()]).GetComponent<IEntityView>();
             
             if (entityView == null)

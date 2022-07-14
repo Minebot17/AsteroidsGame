@@ -27,5 +27,14 @@ namespace View.EntityViews
                 Entity.TryFireBullet();
             }
         }
+
+        public void HandleLaserAction(InputAction.CallbackContext context)
+        {
+            var isPressed = context.ReadValue<float>() > 0;
+            if (isPressed)
+            {
+                Entity.TryFireLaser();
+            }
+        }
     }
 }

@@ -10,7 +10,8 @@ namespace GameModel.Entities
         
         Vector2 Position { get; set; }
         float RotationAngle { get; set; }
-        
+
+        void Destroy();
         void Destroyed();
     }
 }

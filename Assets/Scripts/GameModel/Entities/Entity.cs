@@ -14,12 +14,12 @@ namespace GameModel.Entities
         public abstract void TickUpdate();
         public abstract void OnCollision(ICollidable other);
 
-        protected void Destroy()
+        public virtual void Destroy()
         {
             OnSelfDestroy?.Invoke();
         }
         
-        public void Destroyed()
+        public virtual void Destroyed()
         {
             OnDestroyed?.Invoke();
         }

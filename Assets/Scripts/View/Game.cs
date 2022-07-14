@@ -23,6 +23,9 @@ namespace View
         [SerializeField]
         private GameObject _bulletPrefab;
 
+        [SerializeField]
+        private GameObject _laserPrefab;
+
         [SerializeField] 
         private PlayerInput _playerInput;
         
@@ -51,6 +54,9 @@ namespace View
             
             var bulletAction = _playerInput.actions["Bullet"];
             bulletAction.performed += _player.HandleBulletAction;
+            
+            var laserAction = _playerInput.actions["Laser"];
+            laserAction.performed += _player.HandleLaserAction;
         }
 
         private void FixedUpdate()
@@ -71,6 +77,7 @@ namespace View
             entitySpawner.RegisterEntityPrefab(typeof(BigAsteroidEntity), _bigAsteroidPrefab);
             entitySpawner.RegisterEntityPrefab(typeof(SmallAsteroidEntity), _smallAsteroidPrefab);
             entitySpawner.RegisterEntityPrefab(typeof(BulletEntity), _bulletPrefab);
+            entitySpawner.RegisterEntityPrefab(typeof(LaserEntity), _laserPrefab);
 
             return entitySpawner;
         }

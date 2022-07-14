@@ -18,7 +18,8 @@ namespace GameModel
         {
             _entityManager = new EntityManager();
             _mapSizeManager = new MapSizeManager(mapSize);
-            _player = new PlayerEntity(_entityManager, 0.0075f, 4f, 0.987f, 10);
+            _player = new PlayerEntity(_mapSizeManager, _entityManager, 0.0075f, 4f, 
+                0.987f, 10, 50, 200, 4); // TODO вынести настройки в ScriptableObject
         }
 
         public void StartGame()

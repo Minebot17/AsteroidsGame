@@ -157,6 +157,7 @@ MonoBehaviour:
   _bigAsteroidPrefab: {fileID: 3869375378691558465, guid: a1433f4fca695724d8cb824c9b8c9c7b, type: 3}
   _smallAsteroidPrefab: {fileID: 6229955040978099446, guid: 1dc767acac076d2419be6a9e157e6f6b, type: 3}
   _bulletPrefab: {fileID: 1055976957215956564, guid: bbf10fb4b786b1b4099350ff65175416, type: 3}
+  _laserPrefab: {fileID: 2931899701497445808, guid: 10e712130cd4060439cd69fefa328f47, type: 3}
   _playerInput: {fileID: 380937075}
 --- !u!4 &380937074
 Transform:
@@ -246,6 +247,10 @@ MonoBehaviour:
       m_Calls: []
     m_ActionId: e4c43c89-e83b-47be-8b07-4aff3f3bef2b
     m_ActionName: UI/TrackedDeviceOrientation
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: e14e7a00-0445-4ab5-b2b4-cd0bd049bd04
+    m_ActionName: Player/Laser[/XInputControllerWindows/leftTrigger,/Mouse/rightButton]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Player

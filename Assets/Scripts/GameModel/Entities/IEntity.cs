@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace GameModel.Entities
 {
-    public interface IEntity : IUpdatable
+    public interface IEntity : IUpdatable, ICollidable
     {
         event Action OnSelfDestroy;
         event Action OnDestroyed;

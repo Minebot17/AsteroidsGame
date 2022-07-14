@@ -11,21 +11,14 @@ namespace GameModel.Map
         public event Action<IEntity> OnEntityDestroyed;
 
         private readonly List<IEntity> _entities = new();
-        private readonly IEntitySpawner _entitySpawner;
         
         public IReadOnlyList<IEntity> Entities => _entities.AsReadOnly();
 
-        public EntityManager(IEntitySpawner entitySpawner)
-        {
-            _entitySpawner = entitySpawner;
-        }
-
-        public void SpawnEntity<T>(T entity) where T : IEntity
+        public void SpawnEntity(IEntity entity)
         {
             entity.OnSelfDestroy += () => DestroyEntity(entity);
             _entities.Add(entity);
             OnEntitySpawned?.Invoke(entity);
-            _entitySpawner.SpawnEntity(entity);
         }
 
         public void DestroyEntity(IEntity entity)

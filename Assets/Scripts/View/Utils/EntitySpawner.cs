@@ -16,9 +16,9 @@ namespace View.Utils
             _entityPrefabs.Add(entityType, prefab);
         }
 
-        public void SpawnEntity<T>(T entity) where T : IEntity
+        public void SpawnEntity(IEntity entity)
         {
-            IEntityView<T> entityView = Object.Instantiate(_entityPrefabs[entity.GetType()]).GetComponent<IEntityView<T>>();
+            var entityView = Object.Instantiate(_entityPrefabs[entity.GetType()]).GetComponent<IEntityView>();
             
             if (entityView == null)
             {

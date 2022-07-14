@@ -47,7 +47,7 @@ namespace GameModel.Map
                     return;
                 }
                 
-                BigAsteroidEntity bigAsteroidEntity = new BigAsteroidEntity(
+                var bigAsteroidEntity = new BigAsteroidEntity(
                     _mapSizeManager.GetRandomPositionOnBorder(), 
                     _bigAsteroidSpeed * Vector2.right.Rotate(Random.value * 360), 
                     _bigAsteroidTorque);

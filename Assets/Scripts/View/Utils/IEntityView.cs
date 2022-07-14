@@ -2,8 +2,8 @@
 
 namespace View.Utils
 {
-    public interface IEntityView<T> where T : IEntity
+    public interface IEntityView
     {
-        T EntityModel { get; set; }
+        IEntity EntityModel { get; set; }
     }
 }

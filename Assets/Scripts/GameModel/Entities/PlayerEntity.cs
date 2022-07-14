@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace GameModel.Entities
 {
-    public class PlayerEntity : Entity
+    public class PlayerEntity : Entity, ICollidable
     {
         private readonly float _movingSpeed;
         private readonly float _rotationSpeed;
@@ -48,6 +48,15 @@ namespace GameModel.Entities
         public void SetRotationState(RotationState rotationState)
         {
             _rotationState = rotationState;
+        }
+
+        public override void OnCollision(ICollidable other)
+        {
+            // TODO dead
+            if (other is BigAsteroidEntity)
+            {
+                Debug.LogError("Collision with asteroid");
+            }
         }
     }
 }

@@ -13,11 +13,11 @@ namespace GameModel.Map
 
         public Vector2 GetRandomPositionOnBorder()
         {
-            Vector2 mapSize = MapSize;
-            int randomEdge = Random.Range(0, 4);
-            Vector2 randomPosition = Vector2.zero;
-            float randomX = Random.Range(-mapSize.x / 2f, mapSize.x / 2f);
-            float randomY = Random.Range(-mapSize.y / 2f, mapSize.y / 2f);
+            var mapSize = MapSize;
+            var randomEdge = Random.Range(0, 4);
+            var randomPosition = Vector2.zero;
+            var randomX = Random.Range(-mapSize.x / 2f, mapSize.x / 2f);
+            var randomY = Random.Range(-mapSize.y / 2f, mapSize.y / 2f);
             
             switch (randomEdge)
             {

@@ -19,19 +19,22 @@ namespace View
         private PlayerInput _playerInput;
         
         private IGameModel _gameModel;
-        private EntitySpawner _entitySpawner;
+        private IEntitySpawner _entitySpawner;
         private Player _player;
 
         private void Start()
         {
-            Camera cam = Camera.main;
-            Vector3 leftRightCameraPoint = cam.ViewportToWorldPoint(new Vector3(1, 1, 0));
-            Vector2 mapSize = new Vector2(leftRightCameraPoint.x * 2f, leftRightCameraPoint.y * 2f);
+            var cam = Camera.main;
+            var leftRightCameraPoint = cam.ViewportToWorldPoint(new Vector3(1, 1, 0));
+            var mapSize = new Vector2(leftRightCameraPoint.x * 2f, leftRightCameraPoint.y * 2f);
             
-            _gameModel = new GameModel.GameModel(mapSize, ConstructEntitySpawner());
+            _entitySpawner = ConstructEntitySpawner();
+            _gameModel = new GameModel.GameModel(mapSize);
+            _gameModel.EntityManager.OnEntitySpawned += OnEntitySpawned;
+            _gameModel.StartGame();
             _player = FindObjectOfType<Player>(); // TODO better way to get player
                 
-            InputAction moveAction = _playerInput.actions["Move"];
+            var moveAction = _playerInput.actions["Move"];
             moveAction.started += _player.HandleMoveAction;
             moveAction.performed += _player.HandleMoveAction;
             moveAction.canceled += _player.HandleMoveAction;
@@ -42,9 +45,14 @@ namespace View
             _gameModel.FixedUpdate();
         }
 
-        private EntitySpawner ConstructEntitySpawner()
+        private void OnEntitySpawned(IEntity entity)
         {
-            EntitySpawner entitySpawner = new EntitySpawner();
+            _entitySpawner.SpawnEntity(entity);
+        }
+
+        private IEntitySpawner ConstructEntitySpawner()
+        {
+            var entitySpawner = new EntitySpawner();
             
             entitySpawner.RegisterEntityPrefab(typeof(PlayerEntity), _playerPrefab);
             entitySpawner.RegisterEntityPrefab(typeof(BigAsteroidEntity), _bigAsteroidPrefab);

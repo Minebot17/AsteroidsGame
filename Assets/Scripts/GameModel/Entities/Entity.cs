@@ -12,6 +12,7 @@ namespace GameModel.Entities
         public float RotationAngle { get; set; }
         
         public abstract void FixedUpdate();
+        public abstract void OnCollision(ICollidable other);
 
         protected void Destroy()
         {

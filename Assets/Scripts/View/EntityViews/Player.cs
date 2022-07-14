@@ -1,10 +1,8 @@
-﻿using System;
-using GameModel.Entities;
+﻿using GameModel.Entities;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using View.Utils;
 
-namespace View
+namespace View.EntityViews
 {
     public class Player : EntityView<PlayerEntity>
     {
@@ -18,6 +16,16 @@ namespace View
                     : direction.x > 0 
                         ? RotationState.Right
                         : RotationState.None);
+        }
+
+        public void HandleBulletAction(InputAction.CallbackContext context)
+        {
+            // TODO fire many times if holding down
+            var isPressed = context.ReadValue<float>() > 0;
+            if (isPressed)
+            {
+                Entity.TryFireBullet();
+            }
         }
     }
 }

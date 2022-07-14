@@ -1,9 +1,8 @@
-﻿using System;
-using GameModel.Entities;
+﻿using GameModel.Entities;
 using UnityEngine;
 using View.Utils;
 
-namespace View
+namespace View.EntityViews
 {
     public class EntityView<T> : MonoBehaviour, IEntityView where T : IEntity
     {
@@ -18,7 +17,8 @@ namespace View
             {
                 if (value is not T)
                 {
-                    Debug.LogError($"Wrong entity model type. EntityViewType: {typeof(T)} EntityModelType: {value.GetType()}");
+                    Debug.LogError($"Wrong entity model type. " +
+                                   $"EntityViewType: {typeof(T)} EntityModelType: {value.GetType()}");
                 }
                 
                 _entityModel = value;

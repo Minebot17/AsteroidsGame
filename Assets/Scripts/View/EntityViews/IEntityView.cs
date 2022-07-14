@@ -1,6 +1,6 @@
 ﻿using GameModel.Entities;
 
-namespace View.Utils
+namespace View.EntityViews
 {
     public interface IEntityView
     {

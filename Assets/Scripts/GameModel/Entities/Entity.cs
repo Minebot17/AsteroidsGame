@@ -11,7 +11,7 @@ namespace GameModel.Entities
         public Vector2 Position { get; set; }
         public float RotationAngle { get; set; }
         
-        public abstract void FixedUpdate();
+        public abstract void TickUpdate();
         public abstract void OnCollision(ICollidable other);
 
         protected void Destroy()

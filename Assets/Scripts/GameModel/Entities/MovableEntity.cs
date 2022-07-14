@@ -4,20 +4,20 @@ namespace GameModel.Entities
 {
     public abstract class MovableEntity : Entity
     {
-        private readonly Vector2 _velocity;
-        private readonly float _torque;
+        protected readonly Vector2 Velocity;
+        protected readonly float Torque;
         
         public MovableEntity(Vector2 position, Vector2 velocity, float torque)
         {
             Position = position;
-            _velocity = velocity;
-            _torque = torque;
+            Velocity = velocity;
+            Torque = torque;
         }
         
-        public override void FixedUpdate()
+        public override void TickUpdate()
         {
-            Position += _velocity;
-            RotationAngle += _torque;
+            Position += Velocity;
+            RotationAngle += Torque;
         }
     }
 }

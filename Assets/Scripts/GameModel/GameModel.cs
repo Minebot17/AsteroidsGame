@@ -18,7 +18,7 @@ namespace GameModel
         {
             _entityManager = new EntityManager();
             _mapSizeManager = new MapSizeManager(mapSize);
-            _player = new PlayerEntity(0.0075f, 4f, 0.987f);
+            _player = new PlayerEntity(_entityManager, 0.0075f, 4f, 0.987f, 10);
         }
 
         public void StartGame()
@@ -29,10 +29,10 @@ namespace GameModel
             _updatables.Add(new MapBorderEntityTeleporter(_entityManager, _mapSizeManager, 2));
         }
         
-        public void FixedUpdate()
+        public void TickUpdate()
         {
-            _entityManager.FixedUpdate();
-            _updatables.ForEach(u => u.FixedUpdate());
+            _entityManager.TickUpdate();
+            _updatables.ForEach(u => u.TickUpdate());
         }
     }
 }

@@ -1,8 +1,10 @@
-﻿using System;
+﻿using System.Collections;
 using GameModel;
 using GameModel.Entities;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
+using View.EntityViews;
 using View.Utils;
 
 namespace View
@@ -14,6 +16,12 @@ namespace View
         
         [SerializeField]
         private GameObject _bigAsteroidPrefab;
+
+        [SerializeField] 
+        private GameObject _smallAsteroidPrefab;
+        
+        [SerializeField]
+        private GameObject _bulletPrefab;
 
         [SerializeField] 
         private PlayerInput _playerInput;
@@ -33,16 +41,21 @@ namespace View
             _gameModel.EntityManager.OnEntitySpawned += OnEntitySpawned;
             _gameModel.StartGame();
             _player = FindObjectOfType<Player>(); // TODO better way to get player
+            _player.EntityModel.OnDestroyed += () => StartCoroutine(RestartScene());
                 
+            // TODO вынести инпут в отдельный класс
             var moveAction = _playerInput.actions["Move"];
             moveAction.started += _player.HandleMoveAction;
             moveAction.performed += _player.HandleMoveAction;
             moveAction.canceled += _player.HandleMoveAction;
+            
+            var bulletAction = _playerInput.actions["Bullet"];
+            bulletAction.performed += _player.HandleBulletAction;
         }
 
         private void FixedUpdate()
         {
-            _gameModel.FixedUpdate();
+            _gameModel.TickUpdate();
         }
 
         private void OnEntitySpawned(IEntity entity)
@@ -56,8 +69,16 @@ namespace View
             
             entitySpawner.RegisterEntityPrefab(typeof(PlayerEntity), _playerPrefab);
             entitySpawner.RegisterEntityPrefab(typeof(BigAsteroidEntity), _bigAsteroidPrefab);
+            entitySpawner.RegisterEntityPrefab(typeof(SmallAsteroidEntity), _smallAsteroidPrefab);
+            entitySpawner.RegisterEntityPrefab(typeof(BulletEntity), _bulletPrefab);
 
             return entitySpawner;
+        }
+        
+        private IEnumerator RestartScene()
+        {
+            yield return new WaitForSeconds(2);
+            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         }
     }
 }

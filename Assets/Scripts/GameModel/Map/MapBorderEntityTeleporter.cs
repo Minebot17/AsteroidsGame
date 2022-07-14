@@ -40,7 +40,7 @@ namespace GameModel.Map
             }
         }
 
-        public void FixedUpdate()
+        public void TickUpdate()
         {
             TeleportEntities(_entityManager.Entities);
         }

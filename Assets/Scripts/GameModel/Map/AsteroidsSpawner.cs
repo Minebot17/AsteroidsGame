@@ -36,7 +36,7 @@ namespace GameModel.Map
             _entityManager.OnEntityDestroyed += OnEntityDestroyed;
         }
         
-        public void FixedUpdate()
+        public void TickUpdate()
         {
             if (_currentTicks >= _spawnAsteroidTicksPeriod)
             {
@@ -48,9 +48,11 @@ namespace GameModel.Map
                 }
                 
                 var bigAsteroidEntity = new BigAsteroidEntity(
+                    _entityManager,
                     _mapSizeManager.GetRandomPositionOnBorder(), 
                     _bigAsteroidSpeed * Vector2.right.Rotate(Random.value * 360), 
-                    _bigAsteroidTorque);
+                    _bigAsteroidTorque * (Random.value > 0.5 ? 1 : -1),
+                    3);
                 
                 _entityManager.SpawnEntity(bigAsteroidEntity);
             }

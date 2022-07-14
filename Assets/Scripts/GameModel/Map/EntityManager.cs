@@ -11,6 +11,7 @@ namespace GameModel.Map
         public event Action<IEntity> OnEntityDestroyed;
 
         private readonly List<IEntity> _entities = new();
+        private readonly List<IEntity> _entitiesToDestroy = new();
         
         public IReadOnlyList<IEntity> Entities => _entities.AsReadOnly();
 
@@ -21,19 +22,38 @@ namespace GameModel.Map
             OnEntitySpawned?.Invoke(entity);
         }
 
-        public void DestroyEntity(IEntity entity)
+        public void DestroyEntity(IEntity entity, bool immediate = false)
+        {
+            if (immediate)
+            {
+                DestroyEntityImmediately(entity);
+            }
+            else
+            {
+                _entitiesToDestroy.Add(entity);
+            }
+        }
+
+        public void TickUpdate()
+        {
+            foreach (var entity in _entities)
+            {
+                entity.TickUpdate();
+            }
+            
+            foreach (var entity in _entitiesToDestroy)
+            {
+                DestroyEntityImmediately(entity);
+            }
+            
+            _entitiesToDestroy.Clear();
+        }
+        
+        private void DestroyEntityImmediately(IEntity entity)
         {
             _entities.Remove(entity);
             entity.Destroyed();
             OnEntityDestroyed?.Invoke(entity);
-        }
-
-        public void FixedUpdate()
-        {
-            foreach (var entity in _entities)
-            {
-                entity.FixedUpdate();
-            }
         }
     }
 }

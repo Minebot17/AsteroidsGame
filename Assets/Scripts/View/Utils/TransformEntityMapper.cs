@@ -10,7 +10,7 @@ namespace View.Utils
     public class TransformEntityMapper : ITransformEntityMapper
     {
         private const float PositionInterpolationSpeed = 10f;
-        private const float InterpolationMinDistance = 4f;
+        private const float InterpolationMinDistance = 5f;
         
         private readonly Transform _transform;
         private readonly IEntity _entity;
@@ -23,8 +23,10 @@ namespace View.Utils
 
         public void MapTransformFromEntity()
         {
-            if (Vector3.Distance(_transform.position, _entity.Position) < InterpolationMinDistance)
+            // TODO интерполяция выключена пока не сделается нижня тудушка
+            if (false && Vector3.Distance(_transform.position, _entity.Position) < InterpolationMinDistance)
             {
+                // TODO Interpolation without lerp. Save last model position, calculate delta, calculate current interpolation delta
                 _transform.position = Vector3.Lerp(_transform.position, _entity.Position, Time.deltaTime * PositionInterpolationSpeed);
             }
             else
@@ -32,7 +34,7 @@ namespace View.Utils
                 _transform.position = _entity.Position;
             }
             
-            _transform.eulerAngles = new Vector3(0, 0, _entity.RotationAngle); // TODO lerp angle
+            _transform.eulerAngles = new Vector3(0, 0, _entity.RotationAngle); // TODO interpolate angle
         }
     }
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using GameModel.Entities;
 using GameModel.Utils;
 using UnityEngine;
+using View.EntityViews;
 using Object = UnityEngine.Object;
 
 namespace View.Utils

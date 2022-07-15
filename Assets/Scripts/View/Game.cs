@@ -13,6 +13,9 @@ namespace View
     {
         [SerializeField]
         private GameObject _playerPrefab;
+
+        [SerializeField] 
+        private GameObject _ufoPrefab;
         
         [SerializeField]
         private GameObject _bigAsteroidPrefab;
@@ -74,6 +77,7 @@ namespace View
             var entitySpawner = new EntitySpawner();
             
             entitySpawner.RegisterEntityPrefab(typeof(PlayerEntity), _playerPrefab);
+            entitySpawner.RegisterEntityPrefab(typeof(UfoEntity), _ufoPrefab);
             entitySpawner.RegisterEntityPrefab(typeof(BigAsteroidEntity), _bigAsteroidPrefab);
             entitySpawner.RegisterEntityPrefab(typeof(SmallAsteroidEntity), _smallAsteroidPrefab);
             entitySpawner.RegisterEntityPrefab(typeof(BulletEntity), _bulletPrefab);

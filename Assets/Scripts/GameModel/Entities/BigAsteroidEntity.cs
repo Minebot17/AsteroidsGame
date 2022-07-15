@@ -24,7 +24,7 @@ namespace GameModel.Entities
             _spawnSmallAsteroidsCount = spawnSmallAsteroidsCount;
         }
 
-        public override void OnCollision(ICollidable other)
+        public override void OnCollision(IEntity other)
         {
             if (other is BulletEntity)
             {

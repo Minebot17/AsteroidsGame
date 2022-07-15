@@ -34,7 +34,7 @@ namespace GameModel.Entities
             }
         }
 
-        public override void OnCollision(ICollidable other)
+        public override void OnCollision(IEntity other)
         {
             if (other is IEntity entity and not PlayerEntity)
             {

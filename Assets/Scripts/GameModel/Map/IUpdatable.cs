@@ -1,4 +1,4 @@
-﻿namespace GameModel.Entities
+﻿namespace GameModel.Map
 {
     public interface IUpdatable
     {

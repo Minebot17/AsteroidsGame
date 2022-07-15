@@ -4,8 +4,8 @@ namespace GameModel.Entities
 {
     public abstract class MovableEntity : Entity
     {
-        protected readonly Vector2 Velocity;
-        protected readonly float Torque;
+        protected Vector2 Velocity;
+        protected float Torque;
         
         public MovableEntity(Vector2 position, Vector2 velocity, float torque)
         {

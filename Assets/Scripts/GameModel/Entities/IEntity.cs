@@ -1,9 +1,10 @@
 ﻿using System;
+using GameModel.Map;
 using UnityEngine;
 
 namespace GameModel.Entities
 {
-    public interface IEntity : IUpdatable, ICollidable
+    public interface IEntity : IUpdatable
     {
         event Action OnSelfDestroy;
         event Action OnDestroyed;
@@ -13,5 +14,7 @@ namespace GameModel.Entities
 
         void Destroy();
         void Destroyed();
+        
+        void OnCollision(IEntity other);
     }
 }

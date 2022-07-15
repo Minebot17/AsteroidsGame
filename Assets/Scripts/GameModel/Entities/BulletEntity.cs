@@ -28,7 +28,7 @@ namespace GameModel.Entities
             }
         }
 
-        public override void OnCollision(ICollidable other)
+        public override void OnCollision(IEntity other)
         {
             if (other is BigAsteroidEntity or SmallAsteroidEntity)
             {

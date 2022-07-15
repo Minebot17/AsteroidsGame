@@ -6,7 +6,7 @@ namespace GameModel.Entities
     {
         public SmallAsteroidEntity(Vector2 position, Vector2 velocity, float torque) : base(position, velocity, torque) { }
 
-        public override void OnCollision(ICollidable other)
+        public override void OnCollision(IEntity other)
         {
             if (other is BulletEntity)
             {

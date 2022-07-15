@@ -25,8 +25,8 @@ namespace View.EntityViews
                 Entity = (T) value;
             }
         }
-        
-        protected T Entity;
+
+        public T Entity { get; private set; }
         private ITransformEntityMapper _transformEntityMapper;
 
         protected virtual void Start()

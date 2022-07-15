@@ -8,10 +8,12 @@ using Object = UnityEngine.Object;
 
 namespace View.Utils
 {
-    public class EntitySpawner : IEntitySpawner
+    public class EntityViewSpawner : IEntityViewSpawner
     {
-        private readonly Dictionary<Type, GameObject> _entityPrefabs = new();
+        public event Action<IEntityView> OnEntityViewSpawned;
         
+        private readonly Dictionary<Type, GameObject> _entityPrefabs = new();
+
         public void RegisterEntityPrefab(Type entityType, GameObject prefab)
         {
             _entityPrefabs.Add(entityType, prefab);
@@ -34,6 +36,7 @@ namespace View.Utils
             }
 
             entityView.EntityModel = entity;
+            OnEntityViewSpawned?.Invoke(entityView);
         }
     }
 }

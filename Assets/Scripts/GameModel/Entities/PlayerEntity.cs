@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace GameModel.Entities
 {
-    public class PlayerEntity : Entity
+    public class PlayerEntity : MovableEntity
     {
         private const float SpawnWeaponsOffset = 1f;
 
@@ -19,13 +19,16 @@ namespace GameModel.Entities
         private readonly int _laserChargeCooldown;
         private readonly int _maxLaserCharges;
         
-        private Vector2 _currentMovingVector;
-        private RotationState _rotationState;
         private bool _isMoving;
         private int _currentBulletCooldown;
         private int _currentLaserFireCooldown;
         private int _currentLaserChargeCooldown;
         private int _currentLaserCharges;
+        
+        public int CurrentLaserCharges => _currentLaserCharges;
+        public int MaxLaserCharges => _maxLaserCharges;
+        public int CurrentLaserChargeCooldown => _currentLaserChargeCooldown;
+        public int LaserChargeCooldown => _laserChargeCooldown;
         
         private Vector2 ForwardVector => Vector2.up.Rotate(RotationAngle);
 
@@ -38,7 +41,8 @@ namespace GameModel.Entities
             int bulletCooldown,
             int laserFireCooldown,
             int laserChargeCooldown,
-            int maxLaserCharges)
+            int maxLaserCharges
+            ) : base(Vector2.zero, Vector2.zero, 0)
         {
             _mapSizeManager = mapSizeManager;
             _entityManager = entityManager;
@@ -50,6 +54,7 @@ namespace GameModel.Entities
             _laserChargeCooldown = laserChargeCooldown;
             _maxLaserCharges = maxLaserCharges;
             _currentLaserCharges = _maxLaserCharges;
+            _currentLaserChargeCooldown = _laserChargeCooldown;
         }
 
         public override void TickUpdate()
@@ -57,18 +62,13 @@ namespace GameModel.Entities
             // Apply moving input to accelerate
             if (_isMoving)
             {
-                _currentMovingVector += _movingSpeed * ForwardVector;
+                Velocity += _movingSpeed * ForwardVector;
             }
 
-            // Apply drag and move player by acceleration
-            _currentMovingVector *= _dragModifier;
-            Position += _currentMovingVector;
-
-            // Rotate player from input
-            if (_rotationState != RotationState.None)
-            {
-                RotationAngle += _rotationSpeed * (_rotationState == RotationState.Left ? 1 : -1);
-            }
+            // Apply drag and move player by acceleration and rotation
+            Velocity *= _dragModifier;
+            Position += Velocity;
+            RotationAngle += Torque;
 
             // Cooldown weapons and laser charges
             if (_currentBulletCooldown > 0)
@@ -80,15 +80,18 @@ namespace GameModel.Entities
             {
                 _currentLaserFireCooldown--;
             }
-            
-            if (_currentLaserChargeCooldown > 0)
+
+            if (_currentLaserCharges < _maxLaserCharges)
             {
-                _currentLaserChargeCooldown--;
-            }
-            else if (_currentLaserCharges < _maxLaserCharges)
-            {
-                _currentLaserCharges++;
-                _currentLaserChargeCooldown = _laserChargeCooldown;
+                if (_currentLaserChargeCooldown > 0)
+                {
+                    _currentLaserChargeCooldown--;
+                }
+                else 
+                {
+                    _currentLaserCharges++;
+                    _currentLaserChargeCooldown = _laserChargeCooldown;
+                }
             }
         }
 
@@ -100,6 +103,7 @@ namespace GameModel.Entities
             }
         }
 
+        // TODO абстрагировать оружия от игрока
         public void TryFireBullet()
         {
             if (_currentBulletCooldown <= 0)
@@ -134,7 +138,12 @@ namespace GameModel.Entities
         
         public void SetRotationState(RotationState rotationState)
         {
-            _rotationState = rotationState;
+            Torque = rotationState switch
+            {
+                RotationState.Left => _rotationSpeed,
+                RotationState.Right => -_rotationSpeed,
+                _ => 0
+            };
         }
     }
 }

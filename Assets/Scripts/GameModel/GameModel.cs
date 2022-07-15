@@ -31,7 +31,7 @@ namespace GameModel
             var mapUfoFactory = new MapUfoFactory(_player, _mapSizeManager, 0.08f);
             
             _updatables.Add(new EntityTimedSpawner<BigAsteroidEntity>(bigAsteroidsFactory, _entityManager, 5, 40));
-            _updatables.Add(new EntityTimedSpawner<UfoEntity>(mapUfoFactory, _entityManager, 1, 300));
+            _updatables.Add(new EntityTimedSpawner<UfoEntity>(mapUfoFactory, _entityManager, 1, 400));
             _updatables.Add(new MapBorderEntityTeleporter(_entityManager, _mapSizeManager, 2));
         }
         

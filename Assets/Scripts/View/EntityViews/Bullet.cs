@@ -1,4 +1,5 @@
 ﻿using GameModel.Entities;
+using GameModel.Entities.Player;
 
 namespace View.EntityViews
 {

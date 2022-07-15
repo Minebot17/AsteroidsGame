@@ -9,6 +9,7 @@ namespace View.UI
     public class UpperPanelView : MonoBehaviour
     {
         [SerializeField] private GameObject _laserCellPrefab;
+        [SerializeField] private TextMeshProUGUI _scoreText;
         [SerializeField] private TextMeshProUGUI _coordXText;
         [SerializeField] private TextMeshProUGUI _coordYText;
         [SerializeField] private TextMeshProUGUI _angleText;
@@ -30,6 +31,7 @@ namespace View.UI
         private void FixedUpdate()
         {
             var player = GameView.Instance.Player.Entity;
+            _scoreText.text = $"Score: {GameView.Instance.GameModel.ScoreManager.Score}";
             _coordXText.text = $"X: {(int) player.Position.x}";
             _coordYText.text = $"Y: {(int) player.Position.y}";
             _angleText.text = $"Angle: {(player.RotationAngle > 0 ? player.RotationAngle % 360 : 360 + player.RotationAngle % 360)}°";

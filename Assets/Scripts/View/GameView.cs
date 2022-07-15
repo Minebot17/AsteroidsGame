@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections;
 using GameModel;
+using GameModel.Core;
 using GameModel.Entities;
+using GameModel.Entities.Player;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
@@ -22,12 +24,12 @@ namespace View
         [SerializeField] private GameObject _bulletPrefab;
         [SerializeField] private GameObject _laserPrefab;
         [SerializeField] private PlayerInput _playerInput;
-        
-        private IGameModel _gameModel;
+
         private IEntityViewSpawner _entityViewSpawner;
-        private Player _player;
-        
-        public Player Player => _player;
+
+        public IGameModel GameModel { get; private set; }
+
+        public Player Player { get; private set; }
 
         private void Awake()
         {
@@ -44,27 +46,27 @@ namespace View
             
             _entityViewSpawner = ConstructEntitySpawner();
             _entityViewSpawner.OnEntityViewSpawned += OnEntityViewSpawned;
-            _gameModel = new GameModel.GameModel(mapSize);
-            _gameModel.EntityManager.OnEntitySpawned += OnEntitySpawned;
-            _gameModel.StartGame();
-            _player.EntityModel.OnDestroyed += () => StartCoroutine(RestartScene());
+            GameModel = new GameModel.Core.GameModel(mapSize);
+            GameModel.EntityManager.OnEntitySpawned += OnEntitySpawned;
+            GameModel.StartGame();
+            Player.EntityModel.OnDestroyed += () => StartCoroutine(RestartScene());
                 
             // TODO вынести инпут в отдельный класс
             var moveAction = _playerInput.actions["Move"];
-            moveAction.started += _player.HandleMoveAction;
-            moveAction.performed += _player.HandleMoveAction;
-            moveAction.canceled += _player.HandleMoveAction;
+            moveAction.started += Player.HandleMoveAction;
+            moveAction.performed += Player.HandleMoveAction;
+            moveAction.canceled += Player.HandleMoveAction;
             
             var bulletAction = _playerInput.actions["Bullet"];
-            bulletAction.performed += _player.HandleBulletAction;
+            bulletAction.performed += Player.HandleBulletAction;
             
             var laserAction = _playerInput.actions["Laser"];
-            laserAction.performed += _player.HandleLaserAction;
+            laserAction.performed += Player.HandleLaserAction;
         }
 
         private void FixedUpdate()
         {
-            _gameModel.TickUpdate();
+            GameModel.TickUpdate();
         }
 
         private void OnEntitySpawned(IEntity entity)
@@ -76,7 +78,7 @@ namespace View
         {
             if (entityView is Player player)
             {
-                _player = player;
+                Player = player;
             }
         }
 

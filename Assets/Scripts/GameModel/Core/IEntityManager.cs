@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using GameModel.Entities;
+using GameModel.Map;
 
-namespace GameModel.Map
+namespace GameModel.Core
 {
     public interface IEntityManager : IUpdatable
     {

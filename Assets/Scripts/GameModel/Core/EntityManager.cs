@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using GameModel.Entities;
-using GameModel.Utils;
 
-namespace GameModel.Map
+namespace GameModel.Core
 {
     public class EntityManager : IEntityManager
     {

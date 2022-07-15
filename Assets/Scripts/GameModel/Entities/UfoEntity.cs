@@ -1,11 +1,15 @@
-﻿using UnityEngine;
+﻿using GameModel.Core;
+using GameModel.Entities.Player;
+using UnityEngine;
 
 namespace GameModel.Entities
 {
-    public class UfoEntity : MovableEntity
+    public class UfoEntity : MovableEntity, IScoreSource
     {
         private readonly IEntity _targetEntity;
         private readonly float _speed;
+
+        public int Score => 15;
         
         public UfoEntity(IEntity targetEntity, float speed, Vector2 position) : base(position, Vector2.zero, 0)
         {

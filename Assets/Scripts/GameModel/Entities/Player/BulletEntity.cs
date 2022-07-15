@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace GameModel.Entities
+namespace GameModel.Entities.Player
 {
     public class BulletEntity : MovableEntity
     {

@@ -1,7 +1,8 @@
 ﻿using GameModel.Entities;
 using GameModel.Entities.Factories;
+using GameModel.Map;
 
-namespace GameModel.Map
+namespace GameModel.Core
 {
     public class EntityTimedSpawner<T> : IUpdatable where T : IEntity
     {

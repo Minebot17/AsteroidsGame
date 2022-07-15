@@ -1,16 +1,20 @@
 ﻿using System.Collections.Generic;
+using GameModel.Core;
+using GameModel.Entities.Player;
 using GameModel.Map;
 using GameModel.Utils;
 using UnityEngine;
 
 namespace GameModel.Entities
 {
-    public class BigAsteroidEntity : MovableEntity
+    public class BigAsteroidEntity : MovableEntity, IScoreSource
     {
         private const float SpeedModifierForSmallAsteroids = 2.5f;
 
         private readonly IEntityManager _entityManager;
         private readonly int _spawnSmallAsteroidsCount;
+
+        public int Score => 5; // TODO вынести в настройки
         
         public BigAsteroidEntity(
             IEntityManager entityManager,

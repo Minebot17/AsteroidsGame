@@ -1,9 +1,9 @@
-﻿using System;
+﻿using GameModel.Core;
 using GameModel.Map;
 using GameModel.Utils;
 using UnityEngine;
 
-namespace GameModel.Entities
+namespace GameModel.Entities.Player
 {
     public class PlayerEntity : MovableEntity
     {
@@ -103,7 +103,7 @@ namespace GameModel.Entities
             }
         }
 
-        // TODO абстрагировать оружия от игрока
+        // TODO абстрагировать оружия от игрока, обязательно
         public void TryFireBullet()
         {
             if (_currentBulletCooldown <= 0)

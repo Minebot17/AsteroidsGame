@@ -1,4 +1,5 @@
-﻿using GameModel.Map;
+﻿using GameModel.Core;
+using GameModel.Map;
 using GameModel.Utils;
 using UnityEngine;
 

@@ -1,7 +1,7 @@
 ﻿using GameModel.Map;
 using UnityEngine;
 
-namespace GameModel.Entities
+namespace GameModel.Entities.Player
 {
     public class LaserEntity : Entity
     {

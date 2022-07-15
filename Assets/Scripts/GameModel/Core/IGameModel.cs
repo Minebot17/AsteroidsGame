@@ -1,11 +1,11 @@
-﻿using GameModel.Entities;
-using GameModel.Map;
+﻿using GameModel.Map;
 
-namespace GameModel
+namespace GameModel.Core
 {
     public interface IGameModel : IUpdatable
     {
         IEntityManager EntityManager { get; }
+        IScoreManager ScoreManager { get; }
         
         void StartGame();
     }

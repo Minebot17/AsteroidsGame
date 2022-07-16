@@ -6,8 +6,9 @@ using UnityEngine.UI;
 
 namespace View.UI
 {
-    public class UpperPanelView : MonoBehaviour
+    public class UpperPanelController : MonoBehaviour
     {
+        [SerializeField] private GameView _gameView;
         [SerializeField] private GameObject _laserCellPrefab;
         [SerializeField] private TextMeshProUGUI _scoreText;
         [SerializeField] private TextMeshProUGUI _coordXText;
@@ -20,7 +21,7 @@ namespace View.UI
 
         private void Start()
         {
-            var player = GameView.Instance.Player.Entity;
+            var player = _gameView.Player.Entity;
             for (var i = 0; i < player.MaxLaserCharges; i++)
             {
                 var chargeImage = Instantiate(_laserCellPrefab, _laserCellsContainer);
@@ -30,8 +31,8 @@ namespace View.UI
 
         private void FixedUpdate()
         {
-            var player = GameView.Instance.Player.Entity;
-            _scoreText.text = $"Score: {GameView.Instance.GameModel.ScoreManager.Score}";
+            var player = _gameView.Player.Entity;
+            _scoreText.text = $"Score: {_gameView.GameModel.ScoreManager.Score}";
             _coordXText.text = $"X: {(int) player.Position.x}";
             _coordYText.text = $"Y: {(int) player.Position.y}";
             _angleText.text = $"Angle: {(player.RotationAngle > 0 ? player.RotationAngle % 360 : 360 + player.RotationAngle % 360)}°";

@@ -10,7 +10,7 @@ namespace GameModel.Core
         event Action<IEntity> OnEntitySpawned;
         event Action<IEntity> OnEntityDestroyed;
         
-        IReadOnlyList<IEntity> Entities { get; }
+        IEnumerable<IEntity> Entities { get; }
         
         void SpawnEntity(IEntity entity);
         void DestroyEntity(IEntity entity, bool immediate = false);

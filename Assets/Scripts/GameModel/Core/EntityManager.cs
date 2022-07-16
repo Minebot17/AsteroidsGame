@@ -9,10 +9,10 @@ namespace GameModel.Core
         public event Action<IEntity> OnEntitySpawned;
         public event Action<IEntity> OnEntityDestroyed;
 
-        private readonly List<IEntity> _entities = new();
-        private readonly List<IEntity> _entitiesToDestroy = new();
+        private readonly HashSet<IEntity> _entities = new();
+        private readonly HashSet<IEntity> _entitiesToDestroy = new();
         
-        public IReadOnlyList<IEntity> Entities => _entities.AsReadOnly();
+        public IEnumerable<IEntity> Entities => _entities;
 
         public void SpawnEntity(IEntity entity)
         {

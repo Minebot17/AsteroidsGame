@@ -28,6 +28,7 @@ namespace GameModel.Entities.Player
             }
         }
 
+        // TODO продумать контракт взаимодействия с другими объектами
         public override void OnCollision(IEntity other)
         {
             if (other is BigAsteroidEntity or SmallAsteroidEntity or UfoEntity)

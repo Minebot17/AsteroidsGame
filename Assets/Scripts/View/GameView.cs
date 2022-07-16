@@ -8,15 +8,13 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 using View.EntityViews;
+using View.UI;
 using View.Utils;
 
 namespace View
 {
     public class GameView : MonoBehaviour
     {
-        // Лучше конечно использовать DI библиотеки вместо синглтона, но вы запретили
-        public static GameView Instance { get; private set; }
-        
         [SerializeField] private GameObject _playerPrefab;
         [SerializeField] private GameObject _ufoPrefab;
         [SerializeField] private GameObject _bigAsteroidPrefab;
@@ -24,22 +22,16 @@ namespace View
         [SerializeField] private GameObject _bulletPrefab;
         [SerializeField] private GameObject _laserPrefab;
         [SerializeField] private PlayerInput _playerInput;
+        [SerializeField] private PauseMenuController _pauseMenuController;
 
         private IEntityViewSpawner _entityViewSpawner;
+        private bool _isPaused;
 
         public IGameModel GameModel { get; private set; }
-
         public Player Player { get; private set; }
 
         private void Awake()
         {
-            if (Instance)
-            {
-                Destroy(Instance);
-            }
-            
-            Instance = this;
-
             var cam = Camera.main;
             var leftRightCameraPoint = cam.ViewportToWorldPoint(new Vector3(1, 1, 0));
             var mapSize = new Vector2(leftRightCameraPoint.x * 2f, leftRightCameraPoint.y * 2f);
@@ -49,9 +41,11 @@ namespace View
             GameModel = new GameModel.Core.GameModel(mapSize);
             GameModel.EntityManager.OnEntitySpawned += OnEntitySpawned;
             GameModel.StartGame();
-            Player.EntityModel.OnDestroyed += () => StartCoroutine(RestartScene());
+            Player.EntityModel.OnDestroyed += OnPlayerDestroyed;
                 
             // TODO вынести инпут в отдельный класс
+            // TODO пофиксить баг с ghost entity из-за инпута (обрабатывать его после апдейта, или мб создание новых ентити вывести отдельно как и дестрой)
+            // TODO вырубать все игровые экшены при поставке на паузу
             var moveAction = _playerInput.actions["Move"];
             moveAction.started += Player.HandleMoveAction;
             moveAction.performed += Player.HandleMoveAction;
@@ -62,11 +56,22 @@ namespace View
             
             var laserAction = _playerInput.actions["Laser"];
             laserAction.performed += Player.HandleLaserAction;
+
+            var pauseAction = _playerInput.actions["Pause"];
+            pauseAction.performed += HandlePauseAction;
         }
 
         private void FixedUpdate()
         {
-            GameModel.TickUpdate();
+            if (!_isPaused)
+            {
+                GameModel.TickUpdate();
+            }
+        }
+
+        public void SetPause(bool isPaused)
+        {
+            _isPaused = isPaused;
         }
 
         private void OnEntitySpawned(IEntity entity)
@@ -95,11 +100,18 @@ namespace View
 
             return entitySpawner;
         }
-        
-        private IEnumerator RestartScene()
+
+        private void HandlePauseAction(InputAction.CallbackContext context)
         {
-            yield return new WaitForSeconds(1);
-            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+            if (!_isPaused)
+            {
+                _pauseMenuController.Show("Pause", false);
+            }
+        }
+
+        private void OnPlayerDestroyed()
+        {
+            _pauseMenuController.Show("Game Over", true);
         }
     }
 }

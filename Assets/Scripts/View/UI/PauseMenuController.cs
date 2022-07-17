@@ -1,4 +1,5 @@
-﻿using TMPro;
+﻿using System;
+using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -7,12 +8,17 @@ namespace View.UI
 {
     public class PauseMenuController : MonoBehaviour
     {
+        public event Action<bool> OnPauseChanged; // is paused
+        
         [SerializeField] private string _mainMenuSceneName;
         [SerializeField] private GameView _gameView;
         [SerializeField] private TextMeshProUGUI _titleText;
+        [SerializeField] private TextMeshProUGUI _scoreText;
         [SerializeField] private Button _continueButton;
         [SerializeField] private Button _restartButton;
         [SerializeField] private Button _exitButton;
+
+        public bool IsPaused => gameObject.activeSelf;
         
         private void Start()
         {
@@ -23,16 +29,28 @@ namespace View.UI
 
         public void Show(string title, bool isGameOver)
         {
-            _gameView.SetPause(true);
             _titleText.text = title;
             _continueButton.gameObject.SetActive(!isGameOver);
+            _scoreText.gameObject.SetActive(isGameOver);
             gameObject.SetActive(true);
+
+            if (isGameOver)
+            {
+                _scoreText.text = $"Score: {_gameView.GameModel.ScoreManager.Score}";
+            }
+            
+            OnPauseChanged?.Invoke(true);
+        }
+
+        public void Hide()
+        {
+            OnContinueButtonClick();
         }
         
         private void OnContinueButtonClick()
         {
-            _gameView.SetPause(false);
             gameObject.SetActive(false);
+            OnPauseChanged?.Invoke(false);
         }
         
         private void OnRestartButtonClick()

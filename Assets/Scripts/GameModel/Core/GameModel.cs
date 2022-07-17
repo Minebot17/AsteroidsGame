@@ -22,7 +22,7 @@ namespace GameModel.Core
             ScoreManager = new ScoreManager(EntityManager);
             _mapSizeManager = new MapSizeManager(mapSize);
             _player = new PlayerEntity(_mapSizeManager, EntityManager, 0.0075f, 4f, 
-                0.987f, 10, 1, 1, 40); // TODO вынести настройки в ScriptableObject
+                0.987f, 10, 50, 200, 4); // TODO вынести настройки в ScriptableObject
         }
 
         public void StartGame()

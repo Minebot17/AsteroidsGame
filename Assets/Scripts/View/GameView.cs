@@ -21,7 +21,6 @@ namespace View
         [SerializeField] private GameObject _smallAsteroidPrefab;
         [SerializeField] private GameObject _bulletPrefab;
         [SerializeField] private GameObject _laserPrefab;
-        [SerializeField] private PlayerInput _playerInput;
         [SerializeField] private PauseMenuController _pauseMenuController;
 
         private IEntityViewSpawner _entityViewSpawner;
@@ -42,36 +41,14 @@ namespace View
             GameModel.EntityManager.OnEntitySpawned += OnEntitySpawned;
             GameModel.StartGame();
             Player.EntityModel.OnDestroyed += OnPlayerDestroyed;
-                
-            // TODO вынести инпут в отдельный класс
-            // TODO пофиксить баг с ghost entity из-за инпута (обрабатывать его после апдейта, или мб создание новых ентити вывести отдельно как и дестрой)
-            // TODO вырубать все игровые экшены при поставке на паузу
-            var moveAction = _playerInput.actions["Move"];
-            moveAction.started += Player.HandleMoveAction;
-            moveAction.performed += Player.HandleMoveAction;
-            moveAction.canceled += Player.HandleMoveAction;
-            
-            var bulletAction = _playerInput.actions["Bullet"];
-            bulletAction.performed += Player.HandleBulletAction;
-            
-            var laserAction = _playerInput.actions["Laser"];
-            laserAction.performed += Player.HandleLaserAction;
-
-            var pauseAction = _playerInput.actions["Pause"];
-            pauseAction.performed += HandlePauseAction;
         }
 
         private void FixedUpdate()
         {
-            if (!_isPaused)
+            if (!_pauseMenuController.IsPaused)
             {
                 GameModel.TickUpdate();
             }
-        }
-
-        public void SetPause(bool isPaused)
-        {
-            _isPaused = isPaused;
         }
 
         private void OnEntitySpawned(IEntity entity)
@@ -99,14 +76,6 @@ namespace View
             entitySpawner.RegisterEntityPrefab(typeof(LaserEntity), _laserPrefab);
 
             return entitySpawner;
-        }
-
-        private void HandlePauseAction(InputAction.CallbackContext context)
-        {
-            if (!_isPaused)
-            {
-                _pauseMenuController.Show("Pause", false);
-            }
         }
 
         private void OnPlayerDestroyed()

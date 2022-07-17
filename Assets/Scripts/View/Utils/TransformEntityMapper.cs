@@ -6,10 +6,9 @@ namespace View.Utils
     // Все entity в моделе обновляются в FixedUpdate, чтобы fps не влиял на скорость симуляции
     // Именно FixedUpdate вместо Update избавляет нас от надобности использования Time.deltaTime в моделе, и упращает просчёт движения (с учётом drag оно там не элементарное)
     // Однако если напрямую задавать позицию и вращение из модели в представление, то из-за разницы частоты обновления, движения объектов могут быть резкими
-    // Поэтому сущность ниже будет отвечать за интерполяцию и установку значений из модели в представление для плавного перемещения объектов
+    // Поэтому сущность ниже отвечает за интерполяцию и установку значений из модели в представление для плавного перемещения объектов
     public class TransformEntityMapper : ITransformEntityMapper
     {
-        private const float PositionInterpolationSpeed = 10f;
         private const float InterpolationMinDistance = 5f;
         
         private readonly Transform _transform;
@@ -23,18 +22,26 @@ namespace View.Utils
 
         public void MapTransformFromEntity()
         {
-            // TODO интерполяция выключена пока не сделается нижня тудушка
-            if (false && Vector3.Distance(_transform.position, _entity.Position) < InterpolationMinDistance)
+            // Сила интерполяции зависит от разности между фремрейтом и тикрейтов
+            // Например, если у нас фреймрейт больше в 2 раза, чем обновление модели, то вьюхи мы перемещаем только на половину расстояния к целевой позиции модели
+            var interpolationModifier = Time.deltaTime / Time.fixedDeltaTime;
+            
+            if (Vector3.Distance(_transform.position, _entity.Position) < InterpolationMinDistance)
             {
-                // TODO Interpolation without lerp. Save last model position, calculate delta, calculate current interpolation delta
-                _transform.position = Vector3.Lerp(_transform.position, _entity.Position, Time.deltaTime * PositionInterpolationSpeed);
+                var maxInterpolationDelta =
+                    Vector2.Distance(_entity.Position, _transform.position) * interpolationModifier;
+                _transform.position = Vector2.MoveTowards(_transform.position, _entity.Position, maxInterpolationDelta);
             }
             else
             {
                 _transform.position = _entity.Position;
             }
             
-            _transform.eulerAngles = new Vector3(0, 0, _entity.RotationAngle); // TODO interpolate angle
+            var maxInterpolationDeltaRotation =
+                Mathf.Abs(_transform.rotation.z - _entity.RotationAngle) * interpolationModifier;
+            var interpolatedAngle = Mathf.MoveTowardsAngle(
+                _transform.eulerAngles.z, _entity.RotationAngle, maxInterpolationDeltaRotation);
+            _transform.eulerAngles = new Vector3(0, 0, interpolatedAngle);
         }
     }
 }

@@ -1,6 +1,5 @@
 ﻿using System;
 using GameModel.Entities;
-using GameModel.Entities.Player;
 using GameModel.Utils;
 using UnityEngine;
 using UnityEngine.InputSystem;

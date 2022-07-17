@@ -22,7 +22,7 @@ namespace View.UI
         private void Start()
         {
             var player = _gameView.Player.Entity;
-            for (var i = 0; i < player.MaxLaserCharges; i++)
+            for (var i = 0; i < player.LaserWeapon.MaxLaserCharges; i++)
             {
                 var chargeImage = Instantiate(_laserCellPrefab, _laserCellsContainer);
                 _laserCellImages.Add(chargeImage.GetComponent<Image>());
@@ -38,14 +38,14 @@ namespace View.UI
             _angleText.text = $"Angle: {(player.RotationAngle > 0 ? player.RotationAngle % 360 : 360 + player.RotationAngle % 360)}°";
             _speedText.text = $"Speed: {(int) (player.Velocity.magnitude / Time.fixedDeltaTime)} m/s";
             
-            for (var i = 0; i < player.MaxLaserCharges; i++)
+            for (var i = 0; i < player.LaserWeapon.MaxLaserCharges; i++)
             {
                 var chargeImage = _laserCellImages[i];
-                chargeImage.fillAmount = player.CurrentLaserCharges > i 
+                chargeImage.fillAmount = player.LaserWeapon.CurrentLaserCharges > i 
                     ? 1
-                    : player.CurrentLaserCharges < i 
+                    : player.LaserWeapon.CurrentLaserCharges < i 
                         ? 0
-                        : 1 - (float) player.CurrentLaserChargeCooldown / player.LaserChargeCooldown;
+                        : 1 - (float) player.LaserWeapon.CurrentLaserChargeCooldown / player.LaserWeapon.LaserChargeCooldown;
             }
         }
     }

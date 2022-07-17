@@ -1,5 +1,5 @@
 ﻿using GameModel.Entities;
-using GameModel.Entities.Player;
+using GameModel.Entities.Weapons;
 
 namespace View.EntityViews
 {

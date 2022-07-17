@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using GameModel.Entities;
-using GameModel.Entities.Player;
+using GameModel.Entities.Weapons;
 using UnityEngine;
 
 namespace View.EntityViews
@@ -29,6 +29,7 @@ namespace View.EntityViews
                 if (hit.collider.TryGetComponent(out IEntityView entityView))
                 {
                     Entity.OnCollision(entityView.EntityModel);
+                    entityView.EntityModel.OnCollision(Entity);
                 }
             }
         }

@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using GameModel.Entities;
 using GameModel.Entities.Factories;
-using GameModel.Entities.Player;
+using GameModel.Entities.Weapons;
 using GameModel.Map;
 using UnityEngine;
 
@@ -21,8 +21,9 @@ namespace GameModel.Core
             EntityManager = new EntityManager();
             ScoreManager = new ScoreManager(EntityManager);
             _mapSizeManager = new MapSizeManager(mapSize);
-            _player = new PlayerEntity(_mapSizeManager, EntityManager, 0.0075f, 4f, 
-                0.987f, 10, 50, 200, 4); // TODO вынести настройки в ScriptableObject
+            _player = new PlayerEntity(0.0075f, 4f, 0.987f, 
+                new BulletWeapon(EntityManager, 10), 
+                new LaserWeapon(_mapSizeManager, EntityManager, 50, 200, 4)); // TODO вынести настройки в ScriptableObject
         }
 
         public void StartGame()

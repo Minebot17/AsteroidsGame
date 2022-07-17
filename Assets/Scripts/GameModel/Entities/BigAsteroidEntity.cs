@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using GameModel.Core;
-using GameModel.Entities.Player;
+using GameModel.Entities.Weapons;
 using GameModel.Map;
 using GameModel.Utils;
 using UnityEngine;
@@ -28,14 +28,6 @@ namespace GameModel.Entities
             _spawnSmallAsteroidsCount = spawnSmallAsteroidsCount;
         }
 
-        public override void OnCollision(IEntity other)
-        {
-            if (other is BulletEntity)
-            {
-                Destroy();
-            }
-        }
-
         public override void Destroyed()
         {
             base.Destroyed();
@@ -49,6 +41,11 @@ namespace GameModel.Entities
 
                 _entityManager.SpawnEntity(smallAsteroid);
             }
+        }
+        
+        protected override bool IsCanDestroyedBy(IEntity other)
+        {
+            return other is BulletEntity or LaserEntity;
         }
     }
 }

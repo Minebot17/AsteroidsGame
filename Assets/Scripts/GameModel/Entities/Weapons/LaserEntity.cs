@@ -1,7 +1,7 @@
 ﻿using GameModel.Map;
 using UnityEngine;
 
-namespace GameModel.Entities.Player
+namespace GameModel.Entities.Weapons
 {
     public class LaserEntity : Entity
     {
@@ -34,12 +34,9 @@ namespace GameModel.Entities.Player
             }
         }
 
-        public override void OnCollision(IEntity other)
+        protected override bool IsCanDestroyedBy(IEntity other)
         {
-            if (other is IEntity entity and not PlayerEntity)
-            {
-                entity.Destroy();
-            }
+            return false;
         }
     }
 }

@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace GameModel.Entities.Player
+namespace GameModel.Entities.Weapons
 {
     public class BulletEntity : MovableEntity
     {
@@ -28,13 +28,9 @@ namespace GameModel.Entities.Player
             }
         }
 
-        // TODO продумать контракт взаимодействия с другими объектами
-        public override void OnCollision(IEntity other)
+        protected override bool IsCanDestroyedBy(IEntity other)
         {
-            if (other is BigAsteroidEntity or SmallAsteroidEntity or UfoEntity)
-            {
-                Destroy();
-            }
+            return other is BigAsteroidEntity or SmallAsteroidEntity or UfoEntity;
         }
     }
 }

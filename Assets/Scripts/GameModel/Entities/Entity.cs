@@ -12,7 +12,15 @@ namespace GameModel.Entities
         public float RotationAngle { get; set; }
         
         public abstract void TickUpdate();
-        public abstract void OnCollision(IEntity other);
+        protected abstract bool IsCanDestroyedBy(IEntity other);
+        
+        public void OnCollision(IEntity other)
+        {
+            if (IsCanDestroyedBy(other))
+            {
+                Destroy();
+            }
+        }
 
         public virtual void Destroy()
         {

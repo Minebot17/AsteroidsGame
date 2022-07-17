@@ -3,7 +3,7 @@ using System.Collections;
 using GameModel;
 using GameModel.Core;
 using GameModel.Entities;
-using GameModel.Entities.Player;
+using GameModel.Entities.Weapons;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;

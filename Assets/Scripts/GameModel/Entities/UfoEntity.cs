@@ -1,5 +1,5 @@
 ﻿using GameModel.Core;
-using GameModel.Entities.Player;
+using GameModel.Entities.Weapons;
 using UnityEngine;
 
 namespace GameModel.Entities
@@ -24,12 +24,9 @@ namespace GameModel.Entities
             Position += Velocity;
         }
 
-        public override void OnCollision(IEntity other)
+        protected override bool IsCanDestroyedBy(IEntity other)
         {
-            if (other is BulletEntity)
-            {
-                Destroy();
-            }
+            return other is BulletEntity or LaserEntity;
         }
     }
 }

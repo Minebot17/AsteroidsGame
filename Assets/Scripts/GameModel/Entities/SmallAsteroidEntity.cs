@@ -1,5 +1,5 @@
 ﻿using GameModel.Core;
-using GameModel.Entities.Player;
+using GameModel.Entities.Weapons;
 using UnityEngine;
 
 namespace GameModel.Entities
@@ -10,12 +10,9 @@ namespace GameModel.Entities
         
         public SmallAsteroidEntity(Vector2 position, Vector2 velocity, float torque) : base(position, velocity, torque) { }
 
-        public override void OnCollision(IEntity other)
+        protected override bool IsCanDestroyedBy(IEntity other)
         {
-            if (other is BulletEntity)
-            {
-                Destroy();
-            }
+            return other is BulletEntity or LaserEntity;
         }
     }
 }

@@ -11,11 +11,20 @@ namespace GameModel.Map
         private readonly Vector2 _minBorders;
         private readonly Vector2 _maxBorders;
 
-        public MapBorderEntityTeleporter(IEntityManager entityManager, IMapSizeManager mapSizeManager, float borderOffset)
+        public MapBorderEntityTeleporter(
+            IEntityManager entityManager, 
+            IMapSizeManager mapSizeManager, 
+            float borderOffset)
         {
             _entityManager = entityManager;
-            _minBorders = new Vector2(-mapSizeManager.MapSize.x / 2f - borderOffset, -mapSizeManager.MapSize.y / 2f - borderOffset);
-            _maxBorders = new Vector2(mapSizeManager.MapSize.x / 2f + borderOffset, mapSizeManager.MapSize.y / 2f + borderOffset);
+            
+            _minBorders = new Vector2(
+                -mapSizeManager.MapSize.x / 2f - borderOffset, 
+                -mapSizeManager.MapSize.y / 2f - borderOffset);
+            
+            _maxBorders = new Vector2(
+                mapSizeManager.MapSize.x / 2f + borderOffset, 
+                mapSizeManager.MapSize.y / 2f + borderOffset);
         }
 
         public void TeleportEntities(IEnumerable<IEntity> entities)

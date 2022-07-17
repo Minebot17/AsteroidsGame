@@ -4,7 +4,7 @@ namespace GameModel.Map
 {
     public class MapSizeManager : IMapSizeManager
     {
-        public Vector2 MapSize { get; private set; }
+        public Vector2 MapSize { get; }
 
         public MapSizeManager(Vector2 mapSize)
         {

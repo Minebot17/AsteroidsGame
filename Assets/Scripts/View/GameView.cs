@@ -4,6 +4,7 @@ using GameModel;
 using GameModel.Core;
 using GameModel.Entities;
 using GameModel.Entities.Weapons;
+using GameModel.Utils;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
@@ -15,6 +16,7 @@ namespace View
 {
     public class GameView : MonoBehaviour
     {
+        [SerializeField] private GameSettings _gameSettings;
         [SerializeField] private GameObject _playerPrefab;
         [SerializeField] private GameObject _ufoPrefab;
         [SerializeField] private GameObject _bigAsteroidPrefab;
@@ -33,11 +35,11 @@ namespace View
         {
             var cam = Camera.main;
             var leftRightCameraPoint = cam.ViewportToWorldPoint(new Vector3(1, 1, 0));
-            var mapSize = new Vector2(leftRightCameraPoint.x * 2f, leftRightCameraPoint.y * 2f);
+            _gameSettings.MapSize = new Vector2(leftRightCameraPoint.x * 2f, leftRightCameraPoint.y * 2f);
             
             _entityViewSpawner = ConstructEntitySpawner();
             _entityViewSpawner.OnEntityViewSpawned += OnEntityViewSpawned;
-            GameModel = new GameModel.Core.GameModel(mapSize);
+            GameModel = new GameModel.Core.GameModel(_gameSettings);
             GameModel.EntityManager.OnEntitySpawned += OnEntitySpawned;
             GameModel.StartGame();
             Player.EntityModel.OnDestroyed += OnPlayerDestroyed;

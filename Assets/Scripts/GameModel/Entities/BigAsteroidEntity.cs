@@ -1,7 +1,5 @@
-﻿using System.Collections.Generic;
-using GameModel.Core;
+﻿using GameModel.Core;
 using GameModel.Entities.Weapons;
-using GameModel.Map;
 using GameModel.Utils;
 using UnityEngine;
 
@@ -13,19 +11,24 @@ namespace GameModel.Entities
 
         private readonly IEntityManager _entityManager;
         private readonly int _spawnSmallAsteroidsCount;
+        private readonly int _smallAsteroidScore;
 
-        public int Score => 5; // TODO вынести в настройки
-        
+        public int Score { get; }
+
         public BigAsteroidEntity(
             IEntityManager entityManager,
             Vector2 position, 
             Vector2 velocity, 
             float torque, 
-            int spawnSmallAsteroidsCount) : base(
+            int spawnSmallAsteroidsCount,
+            int bigAsteroidScore,
+            int smallAsteroidScore) : base(
             position, velocity, torque)
         {
             _entityManager = entityManager;
             _spawnSmallAsteroidsCount = spawnSmallAsteroidsCount;
+            Score = bigAsteroidScore;
+            _smallAsteroidScore = smallAsteroidScore;
         }
 
         public override void Destroyed()
@@ -37,7 +40,8 @@ namespace GameModel.Entities
                 var smallAsteroid = new SmallAsteroidEntity(
                     Position,
                     Velocity.Rotate(Random.value * 360) * SpeedModifierForSmallAsteroids,
-                    Torque * (Random.value > 0.5 ? 1 : -1));
+                    Torque * (Random.value > 0.5 ? 1 : -1),
+                    _smallAsteroidScore);
 
                 _entityManager.SpawnEntity(smallAsteroid);
             }

@@ -5,13 +5,21 @@ namespace GameModel.Entities.Weapons
 {
     public class BulletWeapon : Weapon
     {
-        public BulletWeapon(IEntityManager entityManager, int fireCooldown) : base(entityManager, fireCooldown) { }
+        private readonly int _bulletLifeDuration;
+        private readonly float _bulletSpeed;
+
+        public BulletWeapon(IEntityManager entityManager, int fireCooldown, int bulletLifeDuration, float bulletSpeed)
+            : base(entityManager, fireCooldown)
+        {
+            _bulletLifeDuration = bulletLifeDuration;
+            _bulletSpeed = bulletSpeed;
+        }
 
         public override void Fire(Vector2 position, Vector2 direction)
         {
             base.Fire(position, direction);
             
-            var bullet = new BulletEntity(position, direction, 100, 0.5f);
+            var bullet = new BulletEntity(position, direction, _bulletLifeDuration, _bulletSpeed);
             EntityManager.SpawnEntity(bullet);
         }
     }

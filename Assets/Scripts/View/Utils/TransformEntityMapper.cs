@@ -30,7 +30,8 @@ namespace View.Utils
             {
                 var maxInterpolationDelta =
                     Vector2.Distance(_entity.Position, _transform.position) * interpolationModifier;
-                _transform.position = Vector2.MoveTowards(_transform.position, _entity.Position, maxInterpolationDelta);
+                _transform.position = Vector2.MoveTowards(
+                    _transform.position, _entity.Position, maxInterpolationDelta);
             }
             else
             {

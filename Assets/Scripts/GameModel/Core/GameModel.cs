@@ -3,7 +3,7 @@ using GameModel.Entities;
 using GameModel.Entities.Factories;
 using GameModel.Entities.Weapons;
 using GameModel.Map;
-using UnityEngine;
+using GameModel.Utils;
 
 namespace GameModel.Core
 {
@@ -12,30 +12,40 @@ namespace GameModel.Core
         private readonly List<IUpdatable> _updatables = new();
         private readonly IMapSizeManager _mapSizeManager;
         private readonly PlayerEntity _player;
+        private readonly IGameSettings _gameSettings;
 
         public IEntityManager EntityManager { get; }
         public IScoreManager ScoreManager { get; }
 
-        public GameModel(Vector2 mapSize)
+        public GameModel(IGameSettings gameSettings)
         {
+            _gameSettings = gameSettings;
             EntityManager = new EntityManager();
             ScoreManager = new ScoreManager(EntityManager);
-            _mapSizeManager = new MapSizeManager(mapSize);
-            _player = new PlayerEntity(0.0075f, 4f, 0.987f, 
-                new BulletWeapon(EntityManager, 10), 
-                new LaserWeapon(_mapSizeManager, EntityManager, 50, 200, 4)); // TODO вынести настройки в ScriptableObject
+            _mapSizeManager = new MapSizeManager(_gameSettings.MapSize);
+            _player = new PlayerEntity(
+                _gameSettings.PlayerMovingSpeed, _gameSettings.PlayerRotationSpeed, _gameSettings.PlayerDragModifier, 
+                new BulletWeapon(EntityManager, _gameSettings.BulletFireCooldown, 
+                    _gameSettings.BulletLifeDuration, _gameSettings.BulletSpeed), 
+                new LaserWeapon(_mapSizeManager, EntityManager, _gameSettings.LaserFireCooldown, 
+                    _gameSettings.LaserChargeCooldown, _gameSettings.MaxLaserCharges));
         }
 
         public void StartGame()
         {
             EntityManager.SpawnEntity(_player);
 
-            var bigAsteroidsFactory = new MapBigAsteroidFactory(EntityManager, _mapSizeManager, 0.05f, 1, 3);
-            var mapUfoFactory = new MapUfoFactory(_player, _mapSizeManager, 0.08f);
+            var bigAsteroidsFactory = new MapBigAsteroidFactory(
+                EntityManager, _mapSizeManager, _gameSettings.BigAsteroidsSpeed, _gameSettings.BigAsteroidsTorque, 
+                _gameSettings.BigAsteroidsFragmentsCount, _gameSettings.ScoreBigAsteroid, _gameSettings.ScoreSmallAsteroid);
+            var mapUfoFactory = new MapUfoFactory(_player, _mapSizeManager, _gameSettings.UfoSpeed, _gameSettings.ScoreUfo);
             
-            _updatables.Add(new EntityTimedSpawner<BigAsteroidEntity>(bigAsteroidsFactory, EntityManager, 4, 40));
-            _updatables.Add(new EntityTimedSpawner<UfoEntity>(mapUfoFactory, EntityManager, 1, 400));
-            _updatables.Add(new MapBorderEntityTeleporter(EntityManager, _mapSizeManager, 2));
+            _updatables.Add(new EntityTimedSpawner<BigAsteroidEntity>(bigAsteroidsFactory, EntityManager, 
+                _gameSettings.MaxBigAsteroidsCount, _gameSettings.SpawnBigAsteroidPeriod));
+            _updatables.Add(new EntityTimedSpawner<UfoEntity>(
+                mapUfoFactory, EntityManager, _gameSettings.MaxUfosCount, _gameSettings.SpawnUfoPeriod));
+            _updatables.Add(new MapBorderEntityTeleporter(
+                EntityManager, _mapSizeManager, _gameSettings.TeleporterBorderOffset));
             _updatables.Add(EntityManager);
         }
         

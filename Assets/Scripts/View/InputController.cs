@@ -9,6 +9,11 @@ namespace View
 {
     public class InputController : MonoBehaviour
     {
+        private const string MoveActionName = "Move";
+        private const string BulletActionName = "Bullet";
+        private const string LaserActionName = "Laser";
+        private const string PauseActionName = "Pause";
+        
         [SerializeField] private PlayerInput _playerInput;
         [SerializeField] private PauseMenuController _pauseMenuController;
         [SerializeField] private GameView _gameView;
@@ -24,20 +29,20 @@ namespace View
             _pauseMenuController.OnPauseChanged += OnPauseChanged;
 
             var player = _gameView.Player;
-            _moveAction = _playerInput.actions["Move"];
+            _moveAction = _playerInput.actions[MoveActionName];
             _moveAction.started += player.HandleMoveAction;
             _moveAction.performed += player.HandleMoveAction;
             _moveAction.canceled += player.HandleMoveAction;
             
-            _bulletAction = _playerInput.actions["Bullet"];
+            _bulletAction = _playerInput.actions[BulletActionName];
             _bulletAction.started += player.HandleBulletAction;
             _bulletAction.canceled += player.HandleBulletAction;
             
-            _laserAction = _playerInput.actions["Laser"];
+            _laserAction = _playerInput.actions[LaserActionName];
             _laserAction.started += player.HandleLaserAction;
             _laserAction.canceled += player.HandleLaserAction;
 
-            _pauseAction = _playerInput.actions["Pause"];
+            _pauseAction = _playerInput.actions[PauseActionName];
             _pauseAction.performed += HandlePauseAction;
             
             _disableOnPauseActions.AddRange(new []{ _moveAction, _bulletAction, _laserAction });

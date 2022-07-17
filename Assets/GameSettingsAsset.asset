@@ -1,0 +1,35 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f63fe7d2f9e74d49b4b4d5d65fc517e0, type: 3}
+  m_Name: GameSettingsAsset
+  m_EditorClassIdentifier: 
+  _playerMovingSpeed: 0.0075
+  _playerRotationSpeed: 4
+  _playerDragModifier: 0.987
+  _bulletFireCooldown: 10
+  _bulletLifeDuration: 100
+  _bulletSpeed: 0.5
+  _laserFireCooldown: 50
+  _laserChargeCooldown: 200
+  _maxLaserCharges: 4
+  _bigAsteroidsSpeed: 0.05
+  _bigAsteroidsTorque: 1
+  _bigAsteroidsFragmentsCount: 3
+  _ufoSpeed: 0.08
+  _maxBigAsteroidsCount: 4
+  _spawnBigAsteroidPeriod: 40
+  _maxUfosCount: 1
+  _spawnUfoPeriod: 400
+  _teleporterBorderOffset: 2
+  _scoreBigAsteroid: 5
+  _scoreSmallAsteroid: 2
+  _scoreUfo: 15
